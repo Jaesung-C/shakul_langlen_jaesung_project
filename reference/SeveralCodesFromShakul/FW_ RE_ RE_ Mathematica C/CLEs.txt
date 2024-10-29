@@ -1,0 +1,50 @@
+dt = 0.001;
+tmax = 20;
+Nn = Evaluate[tmax/dt]//Round;
+In[34]:= tT = Table[i dt,{i,0,Nn}];
+In[15]:= \[Xi]1 = RandomVariate[NormalDistribution[0,Sqrt[dt]],Nn];
+\[Xi]2 = RandomVariate[NormalDistribution[0,Sqrt[dt]],Nn];
+\[Xi]3 = RandomVariate[NormalDistribution[0,Sqrt[dt]],Nn];
+\[Xi]4 = RandomVariate[NormalDistribution[0,Sqrt[dt]],Nn];
+\[Xi]5 = RandomVariate[NormalDistribution[0,Sqrt[dt]],Nn];
+\[Xi]6 = RandomVariate[NormalDistribution[0,Sqrt[dt]],Nn];
+\[Xi]7 = RandomVariate[NormalDistribution[0,Sqrt[dt]],Nn];
+\[Xi]8 = RandomVariate[NormalDistribution[0,Sqrt[dt]],Nn];
+\[Xi]9 = RandomVariate[NormalDistribution[0,Sqrt[dt]],Nn];
+\[Xi]10 = RandomVariate[NormalDistribution[0,Sqrt[dt]],Nn];
+\[Xi]11 = RandomVariate[NormalDistribution[0,Sqrt[dt]],Nn];
+\[Xi]12 = RandomVariate[NormalDistribution[0,Sqrt[dt]],Nn];
+In[27]:= x = ConstantArray[1,Nn+1];
+y = ConstantArray[1,Nn+1];
+z = ConstantArray[1,Nn+1];
+In[30]:= V= 1000;
+Steady State
+In[28]:= VvalsSS = {V0->2,V1->2 , V4->5, kf->1,k->10,\[Beta]-> 0.01,\[Epsilon]->0.1 ,VM2->6,k2->0.1,VM3->20,m->2,kx->0.5,ky->0.2,kz->0.2,VM5->30,k5->0.3,kd->0.5,p->2,n->4};
+For[i=1,i<=Nn,i++,
+x[[i+1]] =( x[[i]] + (V0+V1 \[Beta]-k x[[i]]-(VM2 x[[i]]^2)/(k2^2+x[[i]]^2)+kf y[[i]]+(VM3 x[[i]]^m y[[i]]^2 z[[i]]^4)/((kx^m+x[[i]]^m) (ky^2+y[[i]]^2) (kz^4+z[[i]]^4)))*dt +1/Sqrt[V] (Sqrt[V0] \[Xi]1[[i]] + Sqrt[V1 \[Beta]] \[Xi]2[[i]]- Sqrt[VM2 x[[i]]^2/(k2^2 + x[[i]]^2)]  \[Xi]3[[i]]+ Sqrt[VM3 x[[i]]^m/(kx^m + x[[i]]^m) y[[i]]^2/(ky^2 + y[[i]]^2) z[[i]]^4/(kz^4 + z[[i]]^4)]  \[Xi]4[[i]]+ Sqrt[kf y[[i]] ]  \[Xi]5[[i]]- Sqrt[kx]  \[Xi]6[[i]])/.VvalsSS ); y[[i+1]] =( y[[i]] + ((VM2 x[[i]]^2)/(k2^2+x[[i]]^2)-kf y[[i]]-(VM3 x[[i]]^m y[[i]]^2 z[[i]]^4)/((kx^m+x[[i]]^m) (ky^2+y[[i]]^2) (kz^4+z[[i]]^4)))dt + 1/Sqrt[V] (Sqrt[VM2 x[[i]]^2/(k2^2 + x[[i]]^2)] \[Xi]7[[i]]- Sqrt[VM3 x[[i]]^m/(kx^m + x[[i]]^m)] \[Xi]8[[i]]- Sqrt[kf y[[i]]]\[Xi]9[[i]])/.VvalsSS );z[[i+1]] = (z[[i]]+ (V4 \[Beta]-\[Epsilon] z[[i]]-(VM5 x[[i]]^n z[[i]]^p)/((kd^n+x[[i]]^n) (k5^p+z[[i]]^p)))dt + 1/Sqrt[V] (Sqrt[V4 \[Beta]] \[Xi]10[[i]]- Sqrt[VM5 z[[i]]^p/(k5^p + z[[i]]^p) x[[i]]^n/(kd^n + x[[i]]^n)] \[Xi]11[[i]]- Sqrt[\[Epsilon] z[[i]]]\[Xi]12[[i]]) /.VvalsSS );]
+In[36]:= ListLinePlot[Transpose[{tT,x}],PlotRange->All]
+Out[36]= 
+Simple Periodic Oscillations
+In[31]:= VvalsSPO = {V0->2,V1->2 , V4->2, kf->1,k->10,\[Beta]-> 0.5,\[Epsilon]->0.1 ,VM2->6,k2->0.1,VM3->20,m->2,kx->0.5,ky->0.2,kz->0.2,VM5->5,k5->1,kd->0.4,p->2,n->4};
+For[i=1,i<=Nn,i++,
+x[[i+1]] =( x[[i]] + (V0+V1 \[Beta]-k x[[i]]-(VM2 x[[i]]^2)/(k2^2+x[[i]]^2)+kf y[[i]]+(VM3 x[[i]]^m y[[i]]^2 z[[i]]^4)/((kx^m+x[[i]]^m) (ky^2+y[[i]]^2) (kz^4+z[[i]]^4)))*dt +1/Sqrt[V] (Sqrt[V0] \[Xi]1[[i]] + Sqrt[V1 \[Beta]] \[Xi]2[[i]]- Sqrt[VM2 x[[i]]^2/(k2^2 + x[[i]]^2)]  \[Xi]3[[i]]+ Sqrt[VM3 x[[i]]^m/(kx^m + x[[i]]^m) y[[i]]^2/(ky^2 + y[[i]]^2) z[[i]]^4/(kz^4 + z[[i]]^4)]  \[Xi]4[[i]]+ Sqrt[kf y[[i]] ]  \[Xi]5[[i]]- Sqrt[kx]  \[Xi]6[[i]])/.VvalsSPO  ); y[[i+1]] =( y[[i]] + ((VM2 x[[i]]^2)/(k2^2+x[[i]]^2)-kf y[[i]]-(VM3 x[[i]]^m y[[i]]^2 z[[i]]^4)/((kx^m+x[[i]]^m) (ky^2+y[[i]]^2) (kz^4+z[[i]]^4)))dt + 1/Sqrt[V] (Sqrt[VM2 x[[i]]^2/(k2^2 + x[[i]]^2)] \[Xi]7[[i]]- Sqrt[VM3 x[[i]]^m/(kx^m + x[[i]]^m)] \[Xi]8[[i]]- Sqrt[kf y[[i]]]\[Xi]9[[i]])/.VvalsSPO  );z[[i+1]] = (z[[i]]+ (V4 \[Beta]-\[Epsilon] z[[i]]-(VM5 x[[i]]^n z[[i]]^p)/((kd^n+x[[i]]^n) (k5^p+z[[i]]^p)))dt + 1/Sqrt[V] (Sqrt[V4 \[Beta]] \[Xi]10[[i]]- Sqrt[VM5 z[[i]]^p/(k5^p + z[[i]]^p) x[[i]]^n/(kd^n + x[[i]]^n)] \[Xi]11[[i]]- Sqrt[\[Epsilon] z[[i]]]\[Xi]12[[i]]) /.VvalsSPO  );]
+In[35]:= ListLinePlot[Transpose[{tT,x}],PlotRange->All]
+Out[35]= 
+Bursting
+In[40]:= VvalsB = {V0->2,V1->2 , V4->2.5, kf->1,k->10,\[Beta]-> 0.46,\[Epsilon]->0.1 ,VM2->6,k2->0.1,VM3->20,m->4,kx->0.3,ky->0.2,kz->0.1,VM5->30,k5->1,kd->0.6,p->1,n->2};
+For[i=1,i<=Nn,i++,
+x[[i+1]] =( x[[i]] + (V0+V1 \[Beta]-k x[[i]]-(VM2 x[[i]]^2)/(k2^2+x[[i]]^2)+kf y[[i]]+(VM3 x[[i]]^m y[[i]]^2 z[[i]]^4)/((kx^m+x[[i]]^m) (ky^2+y[[i]]^2) (kz^4+z[[i]]^4)))*dt +1/Sqrt[V] (Sqrt[V0] \[Xi]1[[i]] + Sqrt[V1 \[Beta]] \[Xi]2[[i]]- Sqrt[VM2 x[[i]]^2/(k2^2 + x[[i]]^2)]  \[Xi]3[[i]]+ Sqrt[VM3 x[[i]]^m/(kx^m + x[[i]]^m) y[[i]]^2/(ky^2 + y[[i]]^2) z[[i]]^4/(kz^4 + z[[i]]^4)]  \[Xi]4[[i]]+ Sqrt[kf y[[i]] ]  \[Xi]5[[i]]- Sqrt[kx]  \[Xi]6[[i]])/.VvalsB ); y[[i+1]] =( y[[i]] + ((VM2 x[[i]]^2)/(k2^2+x[[i]]^2)-kf y[[i]]-(VM3 x[[i]]^m y[[i]]^2 z[[i]]^4)/((kx^m+x[[i]]^m) (ky^2+y[[i]]^2) (kz^4+z[[i]]^4)))dt + 1/Sqrt[V] (Sqrt[VM2 x[[i]]^2/(k2^2 + x[[i]]^2)] \[Xi]7[[i]]- Sqrt[VM3 x[[i]]^m/(kx^m + x[[i]]^m)] \[Xi]8[[i]]- Sqrt[kf y[[i]]]\[Xi]9[[i]])/.VvalsB  );z[[i+1]] = (z[[i]]+ (V4 \[Beta]-\[Epsilon] z[[i]]-(VM5 x[[i]]^n z[[i]]^p)/((kd^n+x[[i]]^n) (k5^p+z[[i]]^p)))dt + 1/Sqrt[V] (Sqrt[V4 \[Beta]] \[Xi]10[[i]]- Sqrt[VM5 z[[i]]^p/(k5^p + z[[i]]^p) x[[i]]^n/(kd^n + x[[i]]^n)] \[Xi]11[[i]]- Sqrt[\[Epsilon] z[[i]]]\[Xi]12[[i]]) /.VvalsB  );]
+In[42]:= ListLinePlot[Transpose[{tT,x}],PlotRange->All]
+Out[42]= 
+Chaos
+In[43]:= VvalsC= {V0->2,V1->2 , V4->3, kf->1,k->10,\[Beta]-> 0.65,\[Epsilon]->13 ,VM2->6,k2->0.1,VM3->30,m->2,kx->0.6,ky->0.3,kz->0.1,VM5->50,k5->0.3194,kd->1,p->1,n->4};
+For[i=1,i<=Nn,i++,
+x[[i+1]] =( x[[i]] + (V0+V1 \[Beta]-k x[[i]]-(VM2 x[[i]]^2)/(k2^2+x[[i]]^2)+kf y[[i]]+(VM3 x[[i]]^m y[[i]]^2 z[[i]]^4)/((kx^m+x[[i]]^m) (ky^2+y[[i]]^2) (kz^4+z[[i]]^4)))*dt +1/Sqrt[V] (Sqrt[V0] \[Xi]1[[i]] + Sqrt[V1 \[Beta]] \[Xi]2[[i]]- Sqrt[VM2 x[[i]]^2/(k2^2 + x[[i]]^2)]  \[Xi]3[[i]]+ Sqrt[VM3 x[[i]]^m/(kx^m + x[[i]]^m) y[[i]]^2/(ky^2 + y[[i]]^2) z[[i]]^4/(kz^4 + z[[i]]^4)]  \[Xi]4[[i]]+ Sqrt[kf y[[i]] ]  \[Xi]5[[i]]- Sqrt[kx]  \[Xi]6[[i]])/.VvalsC); y[[i+1]] =( y[[i]] + ((VM2 x[[i]]^2)/(k2^2+x[[i]]^2)-kf y[[i]]-(VM3 x[[i]]^m y[[i]]^2 z[[i]]^4)/((kx^m+x[[i]]^m) (ky^2+y[[i]]^2) (kz^4+z[[i]]^4)))dt + 1/Sqrt[V] (Sqrt[VM2 x[[i]]^2/(k2^2 + x[[i]]^2)] \[Xi]7[[i]]- Sqrt[VM3 x[[i]]^m/(kx^m + x[[i]]^m)] \[Xi]8[[i]]- Sqrt[kf y[[i]]]\[Xi]9[[i]])/.VvalsC );z[[i+1]] = (z[[i]]+ (V4 \[Beta]-\[Epsilon] z[[i]]-(VM5 x[[i]]^n z[[i]]^p)/((kd^n+x[[i]]^n) (k5^p+z[[i]]^p)))dt + 1/Sqrt[V] (Sqrt[V4 \[Beta]] \[Xi]10[[i]]- Sqrt[VM5 z[[i]]^p/(k5^p + z[[i]]^p) x[[i]]^n/(kd^n + x[[i]]^n)] \[Xi]11[[i]]- Sqrt[\[Epsilon] z[[i]]]\[Xi]12[[i]]) /.VvalsC );]
+In[45]:= ListLinePlot[Transpose[{tT,x}],PlotRange->All]
+Out[45]= 
+Period Doubling Sequences
+In[46]:= VvalsPDS= {V0->2,V1->2 , V4->3, kf->1,k->10,\[Beta]-> 0.7,\[Epsilon]->13 ,VM2->6,k2->0.1,VM3->30,m->2,kx->0.6,ky->0.3,kz->0.1,VM5->50,k5->0.3194,kd->1,p->1,n->4};
+For[i=1,i<=Nn,i++,
+x[[i+1]] =( x[[i]] + (V0+V1 \[Beta]-k x[[i]]-(VM2 x[[i]]^2)/(k2^2+x[[i]]^2)+kf y[[i]]+(VM3 x[[i]]^m y[[i]]^2 z[[i]]^4)/((kx^m+x[[i]]^m) (ky^2+y[[i]]^2) (kz^4+z[[i]]^4)))*dt +1/Sqrt[V] (Sqrt[V0] \[Xi]1[[i]] + Sqrt[V1 \[Beta]] \[Xi]2[[i]]- Sqrt[VM2 x[[i]]^2/(k2^2 + x[[i]]^2)]  \[Xi]3[[i]]+ Sqrt[VM3 x[[i]]^m/(kx^m + x[[i]]^m) y[[i]]^2/(ky^2 + y[[i]]^2) z[[i]]^4/(kz^4 + z[[i]]^4)]  \[Xi]4[[i]]+ Sqrt[kf y[[i]] ]  \[Xi]5[[i]]- Sqrt[kx]  \[Xi]6[[i]])/.VvalsPDS); y[[i+1]] =( y[[i]] + ((VM2 x[[i]]^2)/(k2^2+x[[i]]^2)-kf y[[i]]-(VM3 x[[i]]^m y[[i]]^2 z[[i]]^4)/((kx^m+x[[i]]^m) (ky^2+y[[i]]^2) (kz^4+z[[i]]^4)))dt + 1/Sqrt[V] (Sqrt[VM2 x[[i]]^2/(k2^2 + x[[i]]^2)] \[Xi]7[[i]]- Sqrt[VM3 x[[i]]^m/(kx^m + x[[i]]^m)] \[Xi]8[[i]]- Sqrt[kf y[[i]]]\[Xi]9[[i]])/.VvalsPDS );z[[i+1]] = (z[[i]]+ (V4 \[Beta]-\[Epsilon] z[[i]]-(VM5 x[[i]]^n z[[i]]^p)/((kd^n+x[[i]]^n) (k5^p+z[[i]]^p)))dt + 1/Sqrt[V] (Sqrt[V4 \[Beta]] \[Xi]10[[i]]- Sqrt[VM5 z[[i]]^p/(k5^p + z[[i]]^p) x[[i]]^n/(kd^n + x[[i]]^n)] \[Xi]11[[i]]- Sqrt[\[Epsilon] z[[i]]]\[Xi]12[[i]]) /.VvalsPDS );]
+In[48]:= ListLinePlot[Transpose[{tT,x}],PlotRange->All]
+Out[48]=
