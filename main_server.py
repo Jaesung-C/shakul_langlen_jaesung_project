@@ -4,13 +4,13 @@ from tqdm import tqdm
 
 if __name__ == "__main__":
     time_step = 1e-6 #dont't change
-    total_samples = 200
+    total_samples = 100
     sampling_step = 1000
     
     solver_type = 'euler'  # Declare solver_type here
     system_types = ['OSC'] 
-    # ['B', 'OSC', 'SSS', 'Bosc']
-    V_set = [float('inf')]  # Use float('inf') to represent infinite V
+    # ['1B', '1OSC', '1SSS', '1Bosc', '2OSC', '2SSS', '2QP', '3OSC', '3SSS', '3PD', '3Chaos']
+    V_set = [float('inf')]  # Use float('inf') to represent infinite V, realistic for 10^5~10^6, toy model for 10^8
     
     config_list = []
     

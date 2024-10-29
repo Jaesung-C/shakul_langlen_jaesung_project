@@ -71,42 +71,32 @@ def generate_data(solver_type, sampling_step, V, time_step, beta, epsilon):
     return sample
 
 def load_beta_epsilon(system_type):
-    if system_type == 'B':
+    if system_type == '1B':
         data = np.loadtxt('./data_set/BetaEpsilon/BurstingPoints.dat')
-    elif system_type == 'OSC':
+    elif system_type == '1OSC':
         data = np.loadtxt('./data_set/BetaEpsilon/OSCPoints.dat')
-    elif system_type == 'SSS':
+    elif system_type == '1SSS':
         data = np.loadtxt('./data_set/BetaEpsilon/SSSPoints.dat')
-    elif system_type == 'Bosc':
+    elif system_type == '1Bosc':
         data = np.loadtxt('./data_set/BetaEpsilon/BoscPoints.dat')
+
+    elif system_type == '2OSC':
+        data = np.loadtxt('./data_set/BetaEpsilon/OSPointsP2.dat')    
+    elif system_type == '2SSS':
+        data = np.loadtxt('./data_set/BetaEpsilon/SSSPointsP2.dat')    
+    elif system_type == '2QP':
+        data = np.loadtxt('./data_set/BetaEpsilon/QPPointsP2.dat')    
+
+    elif system_type == '3OSC':
+        data = np.loadtxt('./data_set/BetaEpsilon/OSPointsP3.dat')    
+    elif system_type == '3SSS':
+        data = np.loadtxt('./data_set/BetaEpsilon/SSSPointsP3.dat')    
+    elif system_type == '3PD':
+        data = np.loadtxt('./data_set/BetaEpsilon/PDPointsP3.dat')    
+    elif system_type == '3Chaos':
+        data = np.loadtxt('./data_set/BetaEpsilon/ChaosPointsP3.dat')    
+
     else:
-        raise ValueError('Invalid system type. Choose B, OSC, or SSS.')
+        raise ValueError('Invalid system type.')
     
     return data
-
-# def generate_data_old(system_type, num_samples_per_pair, sampling_num, V, time_step, epsilon, beta):
-
-#     sampling_interval = int(round((10 / time_step) / sampling_num))
-    
-#     x, y, z = solve_system(beta, epsilon, V, time_step)
-    
-#     start_time = 100 + np.random.rand() * 90
-#     end_time = start_time + 10
-#     start_idx = int(start_time / time_step)
-#     end_idx = int(end_time / time_step)
-    
-#     sample = np.column_stack((x[start_idx:end_idx:sampling_interval], y[start_idx:end_idx:sampling_interval], z[start_idx:end_idx:sampling_interval]))
-    
-#     return sample
-
-# def generate_sample_data_old(args):
-#     system_type, V, sampling_num, time_step, beta, epsilon, parm_idx, sample_idx = args
-#     sample_data = generate_data_old(system_type, 1, sampling_num, V, time_step, beta, epsilon)
-#     base_dir = f'./data_set/{system_type}/euler/V{V}/parm{parm_idx}/'
-
-#     os.makedirs(base_dir, exist_ok=True)
-    
-#     sample_file_path = os.path.join(base_dir, f'sample{sample_idx}.npy')    
-#     np.save(sample_file_path, {'samples': sample_data, 'beta': beta, 'epsilon': epsilon})
-    
-#     return f'Sample {sample_idx} (beta={beta}, epsilon={epsilon}) saved for {system_type}, V = {V}'
