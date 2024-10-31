@@ -1,12 +1,12 @@
 #!/bin/bash
 
-#SBATCH --job-name=SSS
+#SBATCH --job-name=1B
 #SBATCH --ntasks=1
 #SBATCH --nodes=1
 #SBATCH --cpus-per-task=64
 #SBATCH --time=100:00:00
 #SBATCH --mem-per-cpu=1000
-#SBATCH --output=outfileSSS.txt
+#SBATCH --output=./slurm/note/outfile1B.txt
 
 module load intel/compiler/latest
 module load intel/mpi/latest
